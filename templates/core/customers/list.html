@@ -2,7 +2,7 @@
 {% block content %}
     {% load static %}
     <title>{% block title %}{{ title1 }}{% endblock title %}</title>
-    <section class="dark:bg-principal mt-20">
+    <section class="dark:bg-principal mt-5">
         <div class="text-center" data-aos="fade-up" data-aos-delay="200">
             <div class="sm:pt-28 lg:pt-24">
                 <div class="flex flex-col items-center justify-center">
@@ -13,67 +13,70 @@
                 <h1 class="dark:text-white text-4xl text-center mt-6 font-Pacifico">
                     {{ title2 }}
                 </h1>
+               
             </div>
             <div class="lg:p-4 rounded-3xl" data-aos="fade-up" data-aos-delay="200">
-                <!-- Tabla -->
+                <!-- Tabla de clientes -->
                 <div class="overflow-x-auto">
                     <table class="w-full text-center text-lg">
                         <thead class="uppercase font-Tiny5 bg-gray-50 dark:bg-secundario dark:text-blue-300">
                             <tr>
-                                <th scope="col" class="px-6 py-3">Url</th>
+                                <th scope="col" class="px-6 py-3">Imagen</th>
+                                <th scope="col" class="px-6 py-3">DNI</th>
                                 <th scope="col" class="px-6 py-3">Nombre</th>
-                                <th scope="col" class="px-6 py-3">Menu</th>
-                                <th scope="col" class="px-6 py-3">Descripción</th>
-                                <th scope="col" class="px-6 py-3">Icono</th>
-                                <th scope="col" class="px-6 py-3">Permisos</th>
-                                {% if permissions.delete_module or permissions.change_module %}
+                                <th scope="col" class="px-6 py-3">Apellido</th>
+                                <th scope="col" class="px-6 py-3">Dirección</th>
+                                <th scope="col" class="px-6 py-3">Género</th>
+                                <th scope="col" class="px-6 py-3">Año de Nac.</th>
+                                <th scope="col" class="px-6 py-3">Teléfono</th>
+                                <th scope="col" class="px-6 py-3">Email</th>
+                                <th scope="col" class="px-6 py-3">Latitud</th>
+                                <th scope="col" class="px-6 py-3">Longitud</th>
+                                {% if permissions.delete_customer or permissions.change_customer %}
                                 <th scope="col" class="px-6 py-3">Acciones</th>
                                 {% endif %}
                             </tr>
                         </thead>
                         <tbody>
-                            {% for item in modules %}
-                            {% if item.is_active %}
+                            {% for item in customers %}
                             <tr class="dark:text-gray-400 bg-white border-b dark:bg-[#0b1121] dark:border-secundario hover:bg-gray-50 dark:hover:bg-[#121c33]">
-                                <td class="px-6 py-4">{{ item.url }}</td>
-                                <td class="px-6 py-4">{{ item.name }}</td>
-                                <td class="px-6 py-4">{{ item.menu.name }}</td>
-                                <td class="px-6 py-4">{{ item.description }}</td>
-                                <td class="px-6 py-4">{{ item.icon }}</td>
                                 <td class="px-6 py-4">
-                                    {% for permission in item.permissions.all %}
-                                        --{{permission.name}}--{% if not forloop.last %}<br>{% endif %}
-                                    {% endfor %}
+                                    <img class="mx-auto w-16 h-16 object-contain rounded-2xl"
+                                        src="{% if item.image %}{{ item.image.url }}{% else %}{% static 'img/default_customer.png' %}{% endif %}"
+                                        alt="Imagen del proveedor">
                                 </td>
+                                <td class="px-6 py-4">{{ item.dni }}</td>
+                                <td class="px-6 py-4">{{ item.first_name }}</td>
+                                <td class="px-6 py-4">{{ item.last_name }}</td>
+                                <td class="px-6 py-4">{{ item.address }}</td>
+                                <td class="px-6 py-4">{{ item.gender }}</td>
+                                <td class="px-6 py-4">{{ item.date_of_birth }}</td>
+                                <td class="px-6 py-4">{{ item.phone }}</td>
+                                <td class="px-6 py-4">{{ item.email }}</td>
+                                <td class="px-6 py-4">{{ item.latitude }}</td>
+                                <td class="px-6 py-4">{{ item.longitude }}</td>
                                 <td class="px-6 py-4">
-                                    {% if permissions.change_module %}
-                                      <a href="{% url 'security:module_update' item.id %}"
-                                          class="text-blue-600 dark:text-blue-500">
-                                          <i class="fa-solid fa-gear"></i>
-                                      </a>
-                                    {% endif%}
-                                    {% if permissions.delete_module %}
-                                      {% if item.id in modules_in_use %}
-                                        <span class="text-gray-400 cursor-not-allowed">
-                                          <i class="fa-solid fa-trash"></i>
-                                        </span>
-                                      {% else %}
-                                        <a href="#"
-                                            class="text-red-600 dark:text-red-500"
-                                            onclick="openDeleteModal('{{ item.id }}', '{{ item.name }}')">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </a>
-                                      {% endif %}
-                                    {% endif %}
-                                  </td>
+                                  {% if permissions.change_customer %}
+                                    <a href="{% url 'core:customer_update' item.id %}"
+                                        class="text-blue-600 dark:text-blue-500">
+                                        <i class="fa-solid fa-gear"></i>
+                                    </a>
+                                  {% endif%}  
+                                  {% if permissions.delete_customer %}
+                                    <a href="#"
+                                        class="text-red-600 dark:text-red-500"
+                                        onclick="openDeleteModal('{{ item.id }}', '{{ item.first_name }}')">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                  {% endif %} 
+                                </td>
                             </tr>
-                            {% endif %}
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
 
-                <!--Paginación-->
+                <!-- Paginación -->
                 <div class="flex justify-center mt-4">
                     <nav aria-label="Page navigation example">
                         <ul class="inline-flex -space-x-px">
@@ -100,13 +103,13 @@
                         </ul>
                     </nav>
                 </div>
-            
+
                 <!-- Enlaces adicionales -->
                 <div class="flex flex-col md:flex-row justify-center form-group text-center p-4">
-                    {% if permissions.add_module %}
+                    {% if permissions.add_customer %}
                     <a class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded-full mr-0 md:mr-2 mb-2 md:mb-0 flex items-center justify-center"
-                        href="{% url 'security:module_create' %}">
-                        <i class="fa-solid fa-plus mr-2"></i> Nuevo Módulo
+                        href="{% url 'core:customer_create' %}">
+                        <i class="fa-solid fa-plus mr-2"></i> Nuevo Cliente
                     </a>
                     {% endif %}
                     <a class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded-full flex items-center justify-center"
@@ -118,17 +121,17 @@
         </div>
     </section>
 
-{% include 'fragments/delete.html' %}
+    {% include 'fragments/delete.html' %}
     <script>
-        function openDeleteModal(id, description) {
+        function openDeleteModal(id, name) {
             const deleteForm = document.getElementById('deleteForm');
-            deleteForm.action = `{% url 'security:module_delete' 0 %}`.replace('0', id);
-            document.getElementById('Description').textContent = `ID: ${id} - ${description}`;
+            deleteForm.action = `{% url 'core:customer_delete' 0 %}`.replace('0', id);
+            document.getElementById('Description').textContent = `ID: ${id} - ${name}`;
             document.getElementById('deleteModal').classList.remove('hidden');
         }
 
         function closeModal() {
             document.getElementById('deleteModal').classList.add('hidden');
         }
-    </script>
+    </script> 
 {% endblock %}

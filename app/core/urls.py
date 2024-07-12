@@ -1,5 +1,5 @@
 from django.urls import path
-from app.core.views import supplier, brand, product, company, category, iva
+from app.core.views import supplier, brand, product, company, category, iva, line, customer, paymentmethod
  
 app_name='core' # define un espacio de nombre para la aplicación
 urlpatterns = [    
@@ -38,26 +38,22 @@ urlpatterns = [
     path('iva_create/', iva.IvaCreateView.as_view(), name='iva_create'),
     path('iva_update/<int:pk>/', iva.IvaUpdateView.as_view(), name='iva_update'),
     path('iva_delete/<int:pk>/', iva.IvaDeleteView.as_view(), name='iva_delete'),
+
+    # URLs de lineas
+    path('line_list/', line.LineListView.as_view(), name='line_list'),
+    path('line_create/', line.LineCreateView.as_view(), name='line_create'),
+    path('line_update/<int:pk>/', line.LineUpdateView.as_view(), name='line_update'),
+    path('line_delete/<int:pk>/', line.LineDeleteView.as_view(), name='line_delete'),
+
+    # URLs de clientes
+    path('customer_list/', customer.CustomerListView.as_view(), name='customer_list'),
+    path('customer_create/', customer.CustomerCreateView.as_view(), name='customer_create'),
+    path('customer_update/<int:pk>/', customer.CustomerUpdateView.as_view(), name='customer_update'),
+    path('customer_delete/<int:pk>/', customer.CustomerDeleteView.as_view(), name='customer_delete'),
+
+    # URLs de métodos de pago
+    path('paymentmethod_list/', paymentmethod.PaymentMethodListView.as_view(), name='paymentmethod_list'),
+    path('paymentmethod_create/', paymentmethod.PaymentMethodCreateView.as_view(), name='paymentmethod_create'),
+    path('paymentmethod_update/<int:pk>/', paymentmethod.PaymentMethodUpdateView.as_view(), name='paymentmethod_update'),
+    path('paymentmethod_delete/<int:pk>/', paymentmethod.PaymentMethodDeleteView.as_view(), name='paymentmethod_delete'),
  ]
-
-    # Otras URLs
-#     path('signup/', views.signup, name='signup'),
-#     path('logout/', views.signout, name='logout'),
-#     path('signin/', views.signin, name='signin'),
-
-#     # URLs de productos
-#     path('product_list/', views.product_List,name='product_list'),
-#     path('product_create/', views.product_create,name='product_create'),
-#     path('product_update/<int:id>/', views.product_update,name='product_update'),
-#     path('product_delete/<int:id>/', views.product_delete,name='product_delete'),
-
-
-
-#     # URLs de categorías
-#     path('category_list/', views.category_List,name='category_list'),
-#     path('category_create/', views.category_create,name='category_create'),
-#     path('category_update/<int:id>/', views.category_update,name='category_update'),
-#     path('category_delete/<int:id>/', views.category_delete,name='category_delete'),
-    
-#     path('purchase/', include('app.purchase.urls')),
-# 

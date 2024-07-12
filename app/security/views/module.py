@@ -1,5 +1,5 @@
 from django.urls import reverse_lazy
-from app.security.models import Module
+from app.security.models import Module, GroupModulePermission
 from app.security.forms.module import ModuleForm
 from app.security.mixins.mixins import CreateViewMixin, DeleteViewMixin, ListViewMixin, PermissionMixin, UpdateViewMixin
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
@@ -13,7 +13,9 @@ class ModuleListView(PermissionMixin, ListViewMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        modules_in_use = list(GroupModulePermission.objects.values_list('module_id', flat=True))
         context['create_url'] = reverse_lazy('security:module_create')
+        context['modules_in_use'] = modules_in_use
         return context
     
 class ModuleCreateView(PermissionMixin, CreateViewMixin, CreateView):
@@ -69,6 +71,6 @@ class ModuleDeleteView(PermissionMixin,DeleteViewMixin, DeleteView):
     
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
-        success_message = f"Éxito al eliminar lógicamente el módulo {self.object.description}."
+        success_message = f"Éxito al eliminar el módulo {self.object.description}."
         messages.success(self.request, success_message)
         return super().delete(request, *args, **kwargs)
