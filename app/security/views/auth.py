@@ -51,6 +51,7 @@ class SignupView(View):
     }
     form = CustomUserCreationForm(request.POST, request.FILES)
     if form.is_valid():
+      form.save()
       messages.success(request, 'Registro exitoso, inicia sesión ahora.')
       return redirect("security:auth_login")
     else:

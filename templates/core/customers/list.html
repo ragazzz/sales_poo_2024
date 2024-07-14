@@ -39,6 +39,7 @@
                         </thead>
                         <tbody>
                             {% for item in customers %}
+                            {% if item.active %}
                             <tr class="dark:text-gray-400 bg-white border-b dark:bg-[#0b1121] dark:border-secundario hover:bg-gray-50 dark:hover:bg-[#121c33]">
                                 <td class="px-6 py-4">
                                     <img class="mx-auto w-16 h-16 object-contain rounded-2xl"
@@ -71,6 +72,7 @@
                                   {% endif %} 
                                 </td>
                             </tr>
+                            {% endif %}
                             {% endfor %}
                         </tbody>
                     </table>
